@@ -39,16 +39,9 @@
 		var isPlay = true;
 
 		var tx = -100, ty = -80, sx = 1, sy = 1;
-		var minW = 0, maxW = 900;
+		var minW = 0, maxW = 715;
 		var IntervalId;
 		var contents = [];
-		var colorTable = {
-			0: "rgb(44, 60, 0)",
-			1: "rgb(98, 110, 0)",
-			2: "rgb(248, 177, 0)",
-			3: "rgb(235, 66, 0)",
-			4: "rgb(107, 1, 24)"
-		}
 		
 		function player(){
 			IntervalId = setInterval(function(){
@@ -122,11 +115,12 @@
 			
 			d3.select("svg").html("");
 			d3.select("svg").append("rect").attr("width", "100%").attr("height", "100%").attr("fill", "#ffffff");
+			//d3.select("svg").append("polygon").attr("transform", "translate(" + tx + "," + ty + ") scale(" + sx + "," + sy + ")").attr("points", lines[0]).style("fill", "#eeeedd");
 			d3.select("svg").append("g").attr("transform", "translate(" + tx + "," + ty + ") scale(" + sx + "," + sy + ")");
 			
 			for(var i = 0; i < lines.length; ++ i){
 				var word = lines[i].split('\t');
-				var color = colorTable[word[1]];
+				var color = toColor(word[1]);
 				if(hoverWord == word[0])
 					color = "#33aaff";
 				else if(hoverWord != "")
@@ -173,5 +167,15 @@
 			sy *= scale;
 			if(!isPlay) show();
 		});
+		
+		
+		function toColor(num) {
+		num >>>= 0;
+		var b = num & 0xFF,
+			g = (num & 0xFF00) >>> 8,
+			r = (num & 0xFF0000) >>> 16,
+			a = ( (num & 0xFF000000) >>> 24 ) / 255 ;
+		return "rgba(" + [r, g, b, a].join(",") + ")";
+		}
 	</script>
 </body>
